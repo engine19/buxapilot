@@ -75,6 +75,7 @@
 			function getcontacts(){
 				var options = new ContactFindOptions();
 				options.filter=""; 
+				options.multiple = true;
 				var fields = ["*"];
 				
 				function onSuccess(contacts){
@@ -83,7 +84,7 @@
 						$("#list").append("<li>" + this.displayName + "</li>");
 					});
 				
-					alert('Found: ' + contacts.length);
+					console.log('Found: ' + contacts.length);
 				}
 				
 				function onError(contactError) {
