@@ -40,10 +40,18 @@
 			<div id="geolocation">
 				<button onclick="geolocation();">Get geolocation</button>
 			</div>
+			
+			<div id="contacts">
+				<button onclick="getcontacts();">Get contacts</button>
+				
+				<ul id="list">
+				</ul>
+			</div>
         </div>
         <script type="text/javascript" src="phonegap.js"></script>
 		<script type="text/javascript" src="plugins/barcodescanner.js"></script>
         <script type="text/javascript" src="js/index.js"></script>
+        <script type="text/javascript" src="js/jquery-1.10.2.js"></script>
         <script type="text/javascript">
             app.initialize();
 			
@@ -62,6 +70,27 @@
 					}
 				);
 			};
+			
+			function getcontacts(){
+				var options = new ContactFindOptions();
+				options.filter=""; 
+				var fields = ["*"];
+				
+				function onSuccess(contacts){
+					$("#list").html('');
+					$(contacts).each(function(){
+						$("#list").append("<li>" + this.displayName + "</li>");
+					});
+				
+					alert(JSON.stringify(contacts));
+				}
+				
+				function onError(contactError) {
+					alert('onError!');
+				};
+				
+				navigator.contacts.find(fields, onSuccess, onError, options);
+			}
 			
 			function geolocation(){
 				var onSuccess = function(position) {
