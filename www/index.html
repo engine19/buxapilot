@@ -34,17 +34,37 @@
 				<p id="deviceProperties">Loading device properties...</p>
             </div>
 			
+			<br/>
+			<br/>
+			<br/>
+			<br/>
+			
 			<div id="barcode">
 				<button onclick="openbarcode();">Open barcode scanner</button>
 			</div>
+			
+			<br/>
+			<br/>
+			<br/>
+			<br/>
 			
 			<div id="geolocation">
 				<button onclick="geolocation();">Get geolocation</button>
 			</div>
 			
+			<br/>
+			<br/>
+			<br/>
+			<br/>
+			
 			<div id="networkinfo">
 				<button onclick="networkinfo();">Networkinfo</button>
 			</div>
+			
+			<br/>
+			<br/>
+			<br/>
+			<br/>
 			
 			<div id="contacts">
 				<button onclick="getcontacts();">Get contacts</button>
@@ -53,23 +73,23 @@
 				</ul>
 			</div>
 			
-			
+			<br/>
+			<br/>
+			<br/>
+			<br/>
 			
 			<form>
 				<label for="email">
-					<b>Email</b>
-					<input type="email" id="email" name="email">
+					<b>Userid</b>
+					<input type="email" id="email" name="email" value="36304969019">
 				</label>
-
-				<label for="comment">
-					<b>Comment</b>
-					<textarea id="comment" name="comment" cols="30" rows="10"></textarea>
-				</label>
-				
-				<input type="submit" value="Save">
+				<input type="submit" value="Get user settings info">
 			</form>
 			
-			
+			<br/>
+			<br/>
+			<br/>
+			<br/>
 			
         </div>
         <script type="text/javascript" src="phonegap.js"></script>
@@ -81,89 +101,93 @@
 		<script src="http://debug.phonegap.com/target/target-script-min.js#tahibalint"></script>
         <script type="text/javascript">
             app.initialize();
+				
+
+			document.addEventListener("deviceready", initBuxapilot, false);
 			
+			function initBuxapilot(){
+				var networkinfo = function(){
+					alert(navigator.network.connection.type);
+				}
+				
+				function openbarcode(){
+					var scanner = cordova.require("cordova/plugin/BarcodeScanner");
+
+					scanner.scan(
+						function (result) {
+						  alert("We got a barcode\n" +
+								"Result: " + result.text + "\n" +
+								"Format: " + result.format + "\n" +
+								"Cancelled: " + result.cancelled);
+						}, 
+						function (error) {
+							alert("Scanning failed: " + error);
+						}
+					);
+				};
+				
+				function getcontacts(){
+					var options = new ContactFindOptions();
+					options.filter=""; 
+					options.multiple = true;
+					var fields = ["*"];
 					
-			var networkinfo = function(){
-				alert(navigator.network.connection.type);
-			}
-			
-			function openbarcode(){
-				var scanner = cordova.require("cordova/plugin/BarcodeScanner");
-
-				scanner.scan(
-					function (result) {
-					  alert("We got a barcode\n" +
-							"Result: " + result.text + "\n" +
-							"Format: " + result.format + "\n" +
-							"Cancelled: " + result.cancelled);
-					}, 
-					function (error) {
-						alert("Scanning failed: " + error);
+					function onSuccess(contacts){
+						$("#list").html('');
+						$(contacts).each(function(){
+							$("#list").append("<li>" + this.displayName + "</li>");
+						});
+					
+						console.log('Found: ' + contacts.length);
 					}
-				);
-			};
-			
-			function getcontacts(){
-				var options = new ContactFindOptions();
-				options.filter=""; 
-				options.multiple = true;
-				var fields = ["*"];
+					
+					function onError(contactError) {
+						alert('onError!');
+					};
+					
+					navigator.contacts.find(fields, onSuccess, onError, options);
+				}
 				
-				function onSuccess(contacts){
-					$("#list").html('');
-					$(contacts).each(function(){
-						$("#list").append("<li>" + this.displayName + "</li>");
+				function geolocation(){
+					var onSuccess = function(position) {
+						alert('Latitude: '          + position.coords.latitude          + '\n' +
+							  'Longitude: '         + position.coords.longitude         + '\n' +
+							  'Altitude: '          + position.coords.altitude          + '\n' +
+							  'Accuracy: '          + position.coords.accuracy          + '\n' +
+							  'Altitude Accuracy: ' + position.coords.altitudeAccuracy  + '\n' +
+							  'Heading: '           + position.coords.heading           + '\n' +
+							  'Speed: '             + position.coords.speed             + '\n' +
+							  'Timestamp: '         + position.timestamp                + '\n');
+					};
+
+					// onError Callback receives a PositionError object
+					//
+					function onError(error) {
+						alert('code: '    + error.code    + '\n' +
+							  'message: ' + error.message + '\n');
+					}
+
+					navigator.geolocation.getCurrentPosition(onSuccess, onError);
+				}
+				
+				$('form').submit(function(){
+					$.ajax({
+						type: 'POST',
+						data: { userid: $("#userid").val() },
+						url: 'https://www.buxa.eu/Buxa.api/Api/User',
+						success: function(data){
+							console.log(data);
+							alert(JSON.stringify(data));
+						},
+						error: function(){
+							console.log(data);
+							alert('There was an error...');
+						}
 					});
-				
-					console.log('Found: ' + contacts.length);
-				}
-				
-				function onError(contactError) {
-					alert('onError!');
-				};
-				
-				navigator.contacts.find(fields, onSuccess, onError, options);
-			}
-			
-			function geolocation(){
-				var onSuccess = function(position) {
-					alert('Latitude: '          + position.coords.latitude          + '\n' +
-						  'Longitude: '         + position.coords.longitude         + '\n' +
-						  'Altitude: '          + position.coords.altitude          + '\n' +
-						  'Accuracy: '          + position.coords.accuracy          + '\n' +
-						  'Altitude Accuracy: ' + position.coords.altitudeAccuracy  + '\n' +
-						  'Heading: '           + position.coords.heading           + '\n' +
-						  'Speed: '             + position.coords.speed             + '\n' +
-						  'Timestamp: '         + position.timestamp                + '\n');
-				};
-
-				// onError Callback receives a PositionError object
-				//
-				function onError(error) {
-					alert('code: '    + error.code    + '\n' +
-						  'message: ' + error.message + '\n');
-				}
-
-				navigator.geolocation.getCurrentPosition(onSuccess, onError);
-			}
-			
-			$('form').submit(function(){
-				$.ajax({
-					type: 'POST',
-					data: { userid: '36304969019' },
-					url: 'https://www.buxa.eu/Buxa.api/Api/User',
-					success: function(data){
-						console.log(data);
-						alert(data);
-					},
-					error: function(){
-						console.log(data);
-						alert('There was an error...');
-					}
+					
+					return false;
 				});
-				
-				return false;
-			});
+			}
 			
         </script>
     </body>
