@@ -145,7 +145,8 @@
 				function onSuccess(contacts){
 					$("#list").html('');
 					$(contacts).each(function(){
-						$("#list").append("<li>" + this.displayName + "</li>");
+						var photo = this.photos[0] ? this.photos[0].value : "no image";
+						$("#list").append("<li>" + this.displayName + ", photo: " + photo + "</li>");
 					});
 				
 					console.log('Found: ' + contacts.length);
