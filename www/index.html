@@ -103,10 +103,12 @@
             app.initialize();
 
 			var networkinfo = function(){
+				alert("networkinfo pressed...");
 				alert(navigator.network.connection.type);
 			}
 			
 			function openbarcode(){
+				alert("barcodescanner pressed...");
 				var scanner = cordova.require("cordova/plugin/BarcodeScanner");
 
 				scanner.scan(
@@ -123,6 +125,7 @@
 			};
 			
 			function getcontacts(){
+				alert("get contacts pressed...");
 				var options = new ContactFindOptions();
 				options.filter=""; 
 				options.multiple = true;
@@ -145,6 +148,8 @@
 			}
 			
 			function geolocation(){
+				alert("get geolocation pressed...");
+			
 				var onSuccess = function(position) {
 					alert('Latitude: '          + position.coords.latitude          + '\n' +
 						  'Longitude: '         + position.coords.longitude         + '\n' +
@@ -167,8 +172,9 @@
 			}
 			
 			$('form').submit(function(){
+				alert("form submit sent...");
 				$.ajax({
-					type: 'POST',
+					type: 'GET',
 					data: { userid: $("#userid").val() },
 					url: 'https://www.buxa.eu/Buxa.api/Api/User',
 					success: function(data){
