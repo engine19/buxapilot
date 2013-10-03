@@ -54,6 +54,23 @@
 			</div>
 			
 			
+			
+			<form>
+				<label for="email">
+					<b>Email</b>
+					<input type="email" id="email" name="email">
+				</label>
+
+				<label for="comment">
+					<b>Comment</b>
+					<textarea id="comment" name="comment" cols="30" rows="10"></textarea>
+				</label>
+				
+				<input type="submit" value="Save">
+			</form>
+			
+			
+			
         </div>
         <script type="text/javascript" src="phonegap.js"></script>
 		<script type="text/javascript" src="plugins/barcodescanner.js"></script>
@@ -66,7 +83,7 @@
             app.initialize();
 			
 					
-		var networkinfo = function(){
+			var networkinfo = function(){
 				alert(navigator.network.connection.type);
 			}
 			
@@ -129,6 +146,24 @@
 
 				navigator.geolocation.getCurrentPosition(onSuccess, onError);
 			}
+			
+			$('form').submit(function(){
+				$.ajax({
+					type: 'POST',
+					data: { userid: '36304969019' },
+					url: 'https://www.buxa.eu/Buxa.api/Api/User',
+					success: function(data){
+						console.log(data);
+						alert(data);
+					},
+					error: function(){
+						console.log(data);
+						alert('There was an error...');
+					}
+				});
+				
+				return false;
+			});
 			
         </script>
     </body>
