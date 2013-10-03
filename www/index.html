@@ -40,6 +40,18 @@
 				height: 100px;
 			}
 		
+		
+			dl{
+				text-align: left;
+			}
+			
+			dl dt{
+				font-weight: bolder;
+			}
+			
+			dl dd{
+				font-style: italic;
+			}
 		</style>
     </head>
     <body>
@@ -86,8 +98,8 @@
 			<div id="contacts">
 				<button onclick="getcontacts();">Get contacts</button>
 				
-				<ul id="list">
-				</ul>
+				<dl id="list">
+				</dl>
 			</div>
 			
 			<br/>
@@ -146,7 +158,9 @@
 					$("#list").html('');
 					$(contacts).each(function(){
 						var photo = this.photos[0] ? this.photos[0].value : "no image";
-						$("#list").append("<li>" + this.displayName + ", photo: " + photo + "</li>");
+						var name = this.displayName;
+						$("#list").append("<dt>" + name + "</dt>");
+						$("#list").append("<dd>" + photo + "</dd>");
 					});
 				
 					console.log('Found: ' + contacts.length);
