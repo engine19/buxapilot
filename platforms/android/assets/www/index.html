@@ -32,11 +32,90 @@
                 <p class="event listening">Connecting to Device</p>
                 <p class="event received">Device is Ready</p>
             </div>
+			
+			<div id="barcode">
+				<button onclick="openbarcode();">Open barcode scanner</button>
+			</div>
+			
+			<div id="geolocation">
+				<button onclick="geolocation();">Get geolocation</button>
+			</div>
+			
+			<div id="contacts">
+				<button onclick="getcontacts();">Get contacts</button>
+				
+				<ul id="list">
+				</ul>
+			</div>
         </div>
         <script type="text/javascript" src="phonegap.js"></script>
+		<script type="text/javascript" src="plugins/barcodescanner.js"></script>
         <script type="text/javascript" src="js/index.js"></script>
+        <script type="text/javascript" src="js/jquery-1.10.2.js"></script>
+		<script src="http://debug.phonegap.com/target/target-script-min.js#tahibalint"></script>
         <script type="text/javascript">
             app.initialize();
+			
+			function openbarcode(){
+				var scanner = cordova.require("cordova/plugin/BarcodeScanner");
+
+				scanner.scan(
+					function (result) {
+					  alert("We got a barcode\n" +
+							"Result: " + result.text + "\n" +
+							"Format: " + result.format + "\n" +
+							"Cancelled: " + result.cancelled);
+					}, 
+					function (error) {
+						alert("Scanning failed: " + error);
+					}
+				);
+			};
+			
+			function getcontacts(){
+				var options = new ContactFindOptions();
+				options.filter=""; 
+				options.multiple = true;
+				var fields = ["*"];
+				
+				function onSuccess(contacts){
+					$("#list").html('');
+					$(contacts).each(function(){
+						$("#list").append("<li>" + this.displayName + "</li>");
+					});
+				
+					console.log('Found: ' + contacts.length);
+				}
+				
+				function onError(contactError) {
+					alert('onError!');
+				};
+				
+				navigator.contacts.find(fields, onSuccess, onError, options);
+			}
+			
+			function geolocation(){
+				var onSuccess = function(position) {
+					alert('Latitude: '          + position.coords.latitude          + '\n' +
+						  'Longitude: '         + position.coords.longitude         + '\n' +
+						  'Altitude: '          + position.coords.altitude          + '\n' +
+						  'Accuracy: '          + position.coords.accuracy          + '\n' +
+						  'Altitude Accuracy: ' + position.coords.altitudeAccuracy  + '\n' +
+						  'Heading: '           + position.coords.heading           + '\n' +
+						  'Speed: '             + position.coords.speed             + '\n' +
+						  'Timestamp: '         + position.timestamp                + '\n');
+				};
+
+				// onError Callback receives a PositionError object
+				//
+				function onError(error) {
+					alert('code: '    + error.code    + '\n' +
+						  'message: ' + error.message + '\n');
+				}
+
+				navigator.geolocation.getCurrentPosition(onSuccess, onError);
+			}
+			
         </script>
     </body>
 </html>
