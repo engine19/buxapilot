@@ -159,9 +159,8 @@
 					$(contacts).each(function(){
 						var photo = this.photos[0] ? this.photos[0].value : "no image";
 						var name = this.displayName;
-						var number = phoneNumbers[0] ? this.phoneNumbers[0].value : "no number";
-						$("#list").append("<dt>" + name + ": " + number + "</dt>");
-						$("#list").append("<dd><img src='" + photo + "'/></dd>");
+						$("#list").append("<dt>" + name + "</dt>");
+						$("#list").append("<dd>" + photo + "<br/><img src='" + photo + "'/></dd>");
 					});
 				
 					console.log('Found: ' + contacts.length);
