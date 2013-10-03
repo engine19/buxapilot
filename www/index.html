@@ -159,6 +159,10 @@
 			function geolocation(){
 				alert("get geolocation pressed...");
 			
+				// onSuccess Callback
+				//   This method accepts a `Position` object, which contains
+				//   the current GPS coordinates
+				//
 				var onSuccess = function(position) {
 					alert('Latitude: '          + position.coords.latitude          + '\n' +
 						  'Longitude: '         + position.coords.longitude         + '\n' +
