@@ -39,6 +39,18 @@
 				width: 100%;
 				height: 100px;
 			}
+			
+			dl{
+				text-align: left;
+			}
+			
+			dl dt{
+				font-weight: bolder;
+			} 
+			
+			dl dd{
+				font-style: italic;
+			}
 		
 		</style>
     </head>
@@ -147,7 +159,7 @@
 					$(contacts).each(function(){
 						var photo = this.photos[0] ? this.photos[0].value : "no image";
 						$("#list").append("<dt>" + this.displayName + "</dt>"); 
-						$("#list").append("<dd>" + photo + "</dd>");
+						$("#list").append("<dd>" + photo + "<br/><img src='" + photo + "'/></dd>");
 					});
 				
 					console.log('Found: ' + contacts.length);
