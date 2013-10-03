@@ -40,18 +40,6 @@
 				height: 100px;
 			}
 		
-		
-			dl{
-				text-align: left;
-			}
-			
-			dl dt{
-				font-weight: bolder;
-			}
-			
-			dl dd{
-				font-style: italic;
-			}
 		</style>
     </head>
     <body>
@@ -152,14 +140,13 @@
 				var options = new ContactFindOptions();
 				options.filter=""; 
 				options.multiple = true;
-				var filter = ["*"];
+				var fields = ["*"];
 				
 				function onSuccess(contacts){
 					$("#list").html('');
 					$(contacts).each(function(){
 						var photo = this.photos[0] ? this.photos[0].value : "no image";
-						var name = this.displayName;
-						$("#list").append("<dt>" + name + "</dt>");
+						$("#list").append("<dt>" + this.displayName + "</dt>"); 
 						$("#list").append("<dd>" + photo + "</dd>");
 					});
 				
